@@ -32,8 +32,18 @@ $acpi = <ACPI>;
 close(ACPI);
 
 # fail on unexpected output
-if ($acpi !~ /: (\w+), (\d+)%/) {
-	die "$acpi\n";
+# if ($acpi !~ /: (\w+), (\d+)%/) {
+# 	die "$acpi\n";
+# }
+
+# acpi brought new status message called "Not Charging", manage that status
+if ($acpi =~ /: (.*?), (\d+)%/) {
+	$status = $1;
+	$percent = $2;
+} else {
+	print "BAT?\n";
+	print "BAT?\n";
+	exit 0;
 }
 
 $status = $1;
@@ -44,6 +54,8 @@ if ($status eq 'Discharging') {
 	$full_text .= ' DIS';
 } elsif ($status eq 'Charging') {
 	$full_text .= ' CHR';
+} else {
+	$full_text .= ' FULL';
 }
 
 $short_text = $full_text;
