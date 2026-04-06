@@ -43,5 +43,8 @@ while true; do
 		else
 			sleep 2250 # 45 mins
 		fi
+	else
+		notify-send -u low "󰁹 Device is fully charged." "You can now unplug the charger."
+		sleep 600 # 10 mins
 	fi
 done
