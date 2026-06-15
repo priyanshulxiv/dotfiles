@@ -32,6 +32,7 @@ window            xtitle(a)
 battery           acpi
 brightness        brightnessctl
 cpu               sysstat
+dunst             dunst(*)
 keyindicator
 memory
 temperature       lm_sensors

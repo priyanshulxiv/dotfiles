@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Handle mouse click (Left click = Button 1)
+if [ "$BLOCK_BUTTON" -eq 1 ]; then
+	if [ "$(dunstctl is-paused)" = "true" ] ; then
+		# Clear and resume
+		dunstctl close-all && dunstctl set-paused false
+	else
+		# Turn on Do Not Disturb
+		dunstctl set-paused true
+	fi
+fi
+
+# Output the status icon for i3blocks to display
+if [ "$(dunstctl is-paused)" = "true" ] ; then
+	echo "󰂛 DND"
+	echo "󰂛 DND"
+	echo "#FF0000" # Red text color when paused
+else
+	echo "󰂚 DND"
+	echo "󰂚 DND"
+fi
