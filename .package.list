@@ -17,16 +17,20 @@ webcam            mpv(*) cameractrls
 [Module]          [Packages]
 dunstrc           dunst dmenu firefox ttf-twemoji(a) getnf(https://github.com/getnf/getnf)
 
-# 3. git/
+# 3. font/
+[Module]          [Packages]
+fonts.conf        noto-fonts
+
+# 4. git/
 [Module]          [Packages]
 .gitconfig        git github-cli
 
-# 4. i3/
+# 5. i3/
 [Module]          [Packages]
 config            i3-wm i3lock xss-lock kitty(*) firefox yazi rofi(*) rofi-emoji rofi-greenclip(a) flameshot getnf(https://github.com/getnf/getnf)
 i3blocks.conf     i3blocks
 
-# 4.5. i3blocks/
+# 5.5. i3blocks/
 [Module]          [Packages]
 window            xtitle(a)
 battery           acpi
@@ -39,49 +43,49 @@ temperature       lm_sensors
 volume-pipewire   pipewire pipewire-audio pipewire-pulse pipewire-alsa wireplumber pipewire-jack alsa-utils pavucontrol
 record-status
 
-# 5. kitty/
+# 6. kitty/
 [Module]          [Packages]
 kitty.conf        kitty getnf(https://github.com/getnf/getnf)
 
-# 6. mpv/
+# 7. mpv/
 [Module]          [Packages]
 mpv.conf          mpv
 input.conf        mpv
 
-# 7. nvim/
+# 8. nvim/
 [Module]          [Packages]
 init.lua          nvim git lua luarocks
 lspconfig.lua     nodejs npm
 telescope.lua     fd ripgrep
 treesitter.lua    mingw-w64-gcc make tree-sitter-cli(https://www.npmjs.com/package/tree-sitter-cli)
 
-#8. picom/
+#9. picom/
 [Module]          [Packages]
 picom.conf        picom
 
-# 9. rofi/
+# 10. rofi/
 [Module]          [Packages]
 config.rasi       rofi kitty(*) getnf(https://github.com/getnf/getnf)
 
-# 10. tmux/
+# 11. tmux/
 [Module]          [Packages]
 tmux.conf         tmux xclip
 
-# 11. vim/
+# 12. vim/
 [Module]          [Packages]
 .vimrc            gvim
 
-# 12. wezterm/
+# 13. wezterm/
 [Module]          [Packages]
 wezterm.lua       ttf-twemoji(a) getnf(https://github.com/getnf/getnf) or (https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.zip)
 
-# 13. x/
+# 14. x/
 [Module]          [Packages]
 .xinitrc          xorg xorg-xinit xorg-drivers(https://archlinux.org/groups/x86_64/xorg-drivers/) i3(*)
 .xprofile         qt5ct qt6ct nvim(*) kitty(*) firefox feh networkmanager flameshot dunst rofi-greenclip(a) picom(*)
 .Xresources       gtk3 gtk4 nwg-look qt5ct qt6ct sassc libadwaita (theme, icons, cursor mentioned in file)
 
-# 14. zsh/
+# 15. zsh/
 [Module]          [Packages]
 .zshrc            xorg(*)
 .zshrc            zsh (plugins mentioned in file)
