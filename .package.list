@@ -63,29 +63,33 @@ treesitter.lua    mingw-w64-gcc make tree-sitter-cli(https://www.npmjs.com/packa
 [Module]          [Packages]
 picom.conf        picom
 
-# 10. rofi/
+# 10. redshift/
+[Module]          [Packages]
+redshift.conf     redshift geoclue
+
+# 11. rofi/
 [Module]          [Packages]
 config.rasi       rofi kitty(*) getnf(https://github.com/getnf/getnf)
 
-# 11. tmux/
+# 12. tmux/
 [Module]          [Packages]
 tmux.conf         tmux xclip
 
-# 12. vim/
+# 13. vim/
 [Module]          [Packages]
 .vimrc            gvim
 
-# 13. wezterm/
+# 14. wezterm/
 [Module]          [Packages]
 wezterm.lua       ttf-twemoji(a) getnf(https://github.com/getnf/getnf) or (https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.zip)
 
-# 14. x/
+# 15. x/
 [Module]          [Packages]
 .xinitrc          xorg xorg-xinit xorg-drivers(https://archlinux.org/groups/x86_64/xorg-drivers/) i3(*)
 .xprofile         qt5ct qt6ct nvim(*) kitty(*) firefox feh networkmanager flameshot dunst rofi-greenclip(a) picom(*)
 .Xresources       gtk3 gtk4 nwg-look qt5ct qt6ct sassc libadwaita (theme, icons, cursor mentioned in file)
 
-# 15. zsh/
+# 16. zsh/
 [Module]          [Packages]
 .zshrc            xorg(*)
 .zshrc            zsh (plugins mentioned in file)
