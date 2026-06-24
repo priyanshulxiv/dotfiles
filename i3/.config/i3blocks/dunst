@@ -9,6 +9,7 @@ if [ "$BLOCK_BUTTON" -eq 1 ]; then
 		# Turn on Do Not Disturb
 		dunstctl set-paused true
 	fi
+	pkill -RTMIN+5 i3blocks &
 fi
 
 # Output the status icon for i3blocks to display
