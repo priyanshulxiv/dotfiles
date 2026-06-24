@@ -16,7 +16,7 @@ set timeoutlen=1000
 set ttimeoutlen=0
 
 " Cursor
-set guicursor=n-v-i:block-Cursor
+set guicursor=n-v-c:block,i-ci-ve:block,r-cr:hor20,o:hor50,sm:block
 
 " Tabs and indentation
 set noexpandtab     " Don't convert Tabs to spaces
