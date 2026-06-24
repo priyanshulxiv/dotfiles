@@ -66,7 +66,7 @@ while true; do
 			fi
 		fi
 
-	elif [[ "$batteryStatus" == "Not Charging" ]]; then
+	elif [[ "$batteryStatus" == "Not charging" ]]; then
 		if ! $full_notified; then
 			notify-send -u low "󰁹 Device Fully Charged" "You can now unplug the charger."
 			full_notified=true
