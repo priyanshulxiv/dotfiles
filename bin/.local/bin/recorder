@@ -24,7 +24,9 @@ killrecording() { \
 	rm -f /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
-screencast() { ffmpeg -y \
+screencast() {
+	mkdir -p "$HOME/Videos/screencast"
+	ffmpeg -y \
 	-f x11grab \
 	-framerate 30 \
 	-s "$(getdim)" \
@@ -34,48 +36,56 @@ screencast() { ffmpeg -y \
 	-c:v h264 \
 	-crf 23 -preset ultrafast -c:a aac \
 	-af "afftdn=nf=-75" \
-	"$HOME/Videos/screencast-$(date +%F-%T).mp4" &
+	"$HOME/Videos/screencast/screencast-$(date +%F-%H-%M-%S).mp4" &
 
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
-video() { ffmpeg \
+video() {
+	mkdir -p "$HOME/Videos/videorec"
+	ffmpeg \
 	-f x11grab \
 	-framerate 30 \
 	-s "$(getdim)" \
 	-i "$DISPLAY" \
 	-c:v libx264 -crf 23 -r 30 \
-	"$HOME/Videos/video-$(date +%F-%T).mkv" &
+	"$HOME/Videos/videorec/video-$(date +%F-%H-%M-%S).mkv" &
 
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
-webcamhidef() { ffmpeg \
+webcamhidef() {
+	mkdir -p "$HOME/Videos/webcam"
+	ffmpeg \
 	-f v4l2 \
 	-use_wallclock_as_timestamps 1 \
 	-i /dev/video0 \
 	-video_size 1920x1080 \
-	"$HOME/Videos/webcam-$(date +%F-%T).mkv" &
+	"$HOME/Videos/webcam/webcam-$(date +%F-%H-%M-%S).mkv" &
 
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
-webcam() { ffmpeg \
+webcam() {
+	mkdir -p "$HOME/Videos/webcam"
+	ffmpeg \
 	-f v4l2 \
 	-use_wallclock_as_timestamps 1 \
 	-i /dev/video0 \
 	-video_size 640x480 \
-	"$HOME/Videos/webcam-$(date +%F-%T).mkv" &
+	"$HOME/Videos/webcam/webcam-$(date +%F-%H-%M-%S).mkv" &
 
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
 
-audio() { ffmpeg \
+audio() {
+	mkdir -p "$HOME/Music/audiorec"
+	ffmpeg \
 	-f alsa -i default \
 	-af "afftdn=nf=-75" \
 	-c:a aac -b:a 128k \
-	"$HOME/Music/audio-$(date +%F-%T).mkv" &
+	"$HOME/Music/audiorec/audio-$(date +%F-%H-%M-%S).mkv" &
 
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
@@ -102,13 +112,14 @@ videoselected() {
 	read -r X Y W H < /tmp/slop
 	rm /tmp/slop
 
+	mkdir -p "$HOME/Videos/videorec"
 	ffmpeg \
 		-f x11grab \
 		-framerate 30 \
 		-video_size "$W"x"$H" \
 		-i :0.0+"$X,$Y" \
 		-c:v libx264 -crf 23 -r 30 \
-		"$HOME/Videos/box-$(date +%F-%T).mkv" &
+		"$HOME/Videos/videorec/box-$(date +%F-%H-%M-%S).mkv" &
 
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
