@@ -41,6 +41,17 @@ screencast() {
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
+audio() {
+	mkdir -p "$HOME/Music/audiorec"
+	ffmpeg \
+	-f alsa -i default \
+	-af "afftdn=nf=-75" \
+	-c:a aac -b:a 128k \
+	"$HOME/Music/audiorec/audio-$(date +%F-%H-%M-%S).mkv" &
+
+	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
+}
+
 video() {
 	mkdir -p "$HOME/Videos/videorec"
 	ffmpeg \
@@ -54,14 +65,19 @@ video() {
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
-webcamhidef() {
-	mkdir -p "$HOME/Videos/webcam"
+videoselected() {
+	slop -f "%x %y %w %h" > /tmp/slop
+	read -r X Y W H < /tmp/slop
+	rm /tmp/slop
+
+	mkdir -p "$HOME/Videos/videorec"
 	ffmpeg \
-	-f v4l2 \
-	-use_wallclock_as_timestamps 1 \
-	-i /dev/video0 \
-	-video_size 1920x1080 \
-	"$HOME/Videos/webcam/webcam-$(date +%F-%H-%M-%S).mkv" &
+		-f x11grab \
+		-framerate 30 \
+		-video_size "$W"x"$H" \
+		-i :0.0+"$X,$Y" \
+		-c:v libx264 -crf 23 -r 30 \
+		"$HOME/Videos/videorec/box-$(date +%F-%H-%M-%S).mkv" &
 
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
@@ -78,14 +94,14 @@ webcam() {
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
-
-audio() {
-	mkdir -p "$HOME/Music/audiorec"
+webcamhidef() {
+	mkdir -p "$HOME/Videos/webcam"
 	ffmpeg \
-	-f alsa -i default \
-	-af "afftdn=nf=-75" \
-	-c:a aac -b:a 128k \
-	"$HOME/Music/audiorec/audio-$(date +%F-%H-%M-%S).mkv" &
+	-f v4l2 \
+	-use_wallclock_as_timestamps 1 \
+	-i /dev/video0 \
+	-video_size 1920x1080 \
+	"$HOME/Videos/webcam/webcam-$(date +%F-%H-%M-%S).mkv" &
 
 	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
@@ -105,23 +121,6 @@ askrecording() { \
 asktoend() { \
 	response=$(printf "No\\nYes" | rofi -l 2 -dmenu -i -p "Recording still active. End recording?") &&
 	[ "$response" = "Yes" ] && killrecording
-}
-
-videoselected() {
-	slop -f "%x %y %w %h" > /tmp/slop
-	read -r X Y W H < /tmp/slop
-	rm /tmp/slop
-
-	mkdir -p "$HOME/Videos/videorec"
-	ffmpeg \
-		-f x11grab \
-		-framerate 30 \
-		-video_size "$W"x"$H" \
-		-i :0.0+"$X,$Y" \
-		-c:v libx264 -crf 23 -r 30 \
-		"$HOME/Videos/videorec/box-$(date +%F-%H-%M-%S).mkv" &
-
-	echo $! > /tmp/recordingpid && pkill -RTMIN+3 i3blocks
 }
 
 case "$1" in
