@@ -14,37 +14,65 @@ if [ -f $PIDFILE ]; then
 fi
 echo $BASHPID > $PIDFILE
 
+# Detect battery (BAT0, BAT1, etc...)
+BATPATH=$(dirname /sys/class/power_supply/BAT*/capacity | head -n 1)
+if [ ! -d "$BATPATH" ]; then
+	notify-send -u critical "󰂑 Battery Error!" "No battery found on this system."
+	exit 1
+fi
+
 # Battery Notification script starts here
 CRITICAL_ALERT=15
 NORMAL_ALERT=25
 LOW_ALERT=40
 
+# Track current state
+last_alert=""
+full_notified=false
+
 while true; do
-	batteryCapacity=$(cat /sys/class/power_supply/BAT1/capacity)
-	batteryStatus=$(cat /sys/class/power_supply/BAT1/status)
+	batteryCapacity=$(cat "$BATPATH/capacity")
+	batteryStatus=$(cat "$BATPATH/status")
 
 	if [[ "$batteryStatus" == "Discharging" ]]; then
+		full_notified=false
+
 		if [[ $batteryCapacity -le $CRITICAL_ALERT ]]; then
-			notify-send -u critical "󰂎 Battery Low" "Battery is at $batteryCapacity%"
-			sleep 120 # 2 mins
+			if [[ "$last_alert" != "critical" ]]; then
+				notify-send -u critical "󰂎 Battery Low" "Battery is at ${batteryCapacity}%"
+				last_alert="critical"
+			fi
 		elif [[ $batteryCapacity -le $NORMAL_ALERT ]]; then
-			notify-send -u normal "󰁻 Battery Warning" "Battery is at $batteryCapacity%"
-			sleep 420 # 7 mins
+			if [[ "$last_alert" != "normal" ]]; then
+				notify-send -u normal "󰁻 Battery Warning" "Battery is at ${batteryCapacity}%"
+				last_alert="normal"
+			fi
 		elif [[ $batteryCapacity -le $LOW_ALERT ]]; then
-			notify-send -u low "󰁽 Battery Info" "Consider plugging in the charger. Battery is at $batteryCapacity%"
-			sleep 900 # 15 mins
+			if [[ "$last_alert" != "low" ]]; then
+				notify-send -u low "󰁽 Battery Info" "Consider plugging in. Battery is at ${batteryCapacity}%"
+				last_alert="low"
+			fi
 		else
-			sleep 2250 # 45 mins
+			last_alert=""
 		fi
+
 	elif [[ "$batteryStatus" == "Charging" ]]; then
-		if [[ $batteryCapacity -ge 79 ]]; then
-			notify-send -u low "󰁹 Battery has reached the 80% mark." "You can now unplug the charger."
-			sleep 600 # 10 mins
-		else
-			sleep 2250 # 45 mins
+		last_alert=""
+
+		if [[ $batteryCapacity -ge 80 ]]; then
+			if ! $full_notified; then
+				notify-send -u normal "󰁹 Battery has reached the 80% mark." "You can now unplug the charger."
+				full_notified=true
+			fi
 		fi
-	else
-		notify-send -u low "󰁹 Device is fully charged." "You can now unplug the charger."
-		sleep 600 # 10 mins
+
+	elif [[ "$batteryStatus" == "Full" ]]; then
+		if ! $full_notified; then
+			notify-send -u low "󰁹 Device Fully Charged" "You can now unplug the charger."
+			full_notified=true
+		fi
 	fi
+
+	# Check status consistently every 60 seconds
+	sleep 60
 done

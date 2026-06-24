@@ -124,10 +124,10 @@ asktoend() { \
 }
 
 case "$1" in
-	screencast) killrecording && screencast;;
-	audio) killrecording && audio;;
-	video) killrecording && video;;
-	*selected) killrecording && videoselected;;
+	screencast) killrecording; screencast;;
+	audio) killrecording; audio;;
+	video) killrecording; video;;
+	*selected) killrecording; videoselected;;
 	kill) killrecording;;
 	*) if [ -f /tmp/recordingpid ]; then
 		asktoend && exit

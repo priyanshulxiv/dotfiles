@@ -58,8 +58,9 @@ elif [ "$option" = "umount" ]; then
 	# Doas does it stuff
 	if doas umount "$mountpoint" >/dev/null 2>&1; then
 		notify-send -t 15000 "󱊞  USB Unmounted!" "unmounted $drive from $mountpoint."
+		rmdir "$mountpoint" # Only delete if unmount is sucessful
 	else
-		notify-send -u critical "󱊞 USB Unmount Failed!" "unmount failed due to running process or other reasons."
+		notify-send -u critical "󱊞  USB Unmount Failed!" "unmount failed due to running process or other reasons."
+		exit 1
 	fi
-	rmdir "$mountpoint"
 fi

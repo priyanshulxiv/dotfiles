@@ -6,6 +6,7 @@
 pkill -f /dev/video0 || mpv --geometry=-0-0 -autofit=30% \
 	--profile=low-latency --untimed \
 	--title=webcam --no-osc --aid=no --sid=no \
-	"$(ls /dev/video* 2>/dev/null | head -n 1)" >/dev/null 2>&1
+	"$(ls /dev/video* 2>/dev/null | head -n 1)" \
+	>/dev/null 2>&1
 
-# Or just replace last line with /dev/video0
+# Or just replace line 9 with /dev/video0
